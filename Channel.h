@@ -16,9 +16,14 @@ class Channel
         double trust_score;
 
     public:
-        Channel() = delete;        
 
+        Channel() = delete;
+
+        // Construct from claim_hash and total dewey amount
         Channel(Bytes _claim_hash, std::uint64_t _total_amount_deweys);
+
+        // Construct from RocksDB serialisation
+        Channel(const Bytes& key, const Bytes& value);
 
         // Serialise for RocksDB
         std::tuple<Bytes, Bytes> serialise() const;
