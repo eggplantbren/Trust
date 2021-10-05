@@ -15,6 +15,22 @@ Channel::Channel(Bytes _claim_hash, std::uint64_t _total_amount_deweys)
     assert(claim_hash.size() == Constants::CLAIM_HASH_SIZE);
 }
 
+// Construct from RocksDB serialisation
+Channel::Channel(const Bytes& key, const Bytes& value)
+{
+    assert(key.size() == Constants::CLAIM_HASH_SIZE + 1);
+    assert(value.size() == 2*8);
+
+    // Unpack key
+    claim_hash = key.substr(1);
+
+    // Unpack value
+    std::basic_stringstream<unsigned char> value_istream(value);
+    value_istream.read((unsigned char*)(&total_amount_deweys),
+                        sizeof(total_amount_deweys));
+    value_istream.read((unsigned char*)(&trust_score),
+                        sizeof(trust_score));
+}
 
 // Serialise for RocksDB
 std::tuple<Bytes, Bytes> Channel::serialise() const
