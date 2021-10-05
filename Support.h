@@ -36,7 +36,7 @@ class Support
         void print(std::ostream& out) const;
 };
 
-std::ostream& operator << (std::ostream& out, const Support& Support);
+std::ostream& operator << (std::ostream& out, const Support& support);
 
 } // namespace
 

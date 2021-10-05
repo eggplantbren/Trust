@@ -10,6 +10,7 @@ namespace Constants
 {
 
 static const Bytes CHANNEL_PREFIX = {0};
+static const Bytes SUPPORT_PREFIX = {1};
 static constexpr int CLAIM_HASH_SIZE = 20;
 
 } // namespace Constants
