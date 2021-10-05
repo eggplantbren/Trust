@@ -3,6 +3,7 @@
 
 #include "Bytes.h"
 #include <cstdint>
+#include <ostream>
 #include <tuple>
 
 namespace Trust
@@ -27,7 +28,12 @@ class Channel
 
         // Serialise for RocksDB
         std::tuple<Bytes, Bytes> serialise() const;
+
+        // Print for human consumption
+        void print(std::ostream& out) const;
 };
+
+std::ostream& operator << (std::ostream& out, const Channel& channel);
 
 } // namespace
 

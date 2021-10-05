@@ -1,1 +1,3 @@
+libTrust.a
 *.o
+Tests/channel_serialisation

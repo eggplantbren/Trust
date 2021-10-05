@@ -10,6 +10,7 @@ namespace Trust
 Channel::Channel(Bytes _claim_hash, std::uint64_t _total_amount_deweys)
 :claim_hash(std::move(_claim_hash))
 ,total_amount_deweys(_total_amount_deweys)
+,trust_score(soften(total_amount_deweys))
 {
     assert(claim_hash.size() == Constants::CLAIM_HASH_SIZE);
 }
@@ -31,6 +32,25 @@ std::tuple<Bytes, Bytes> Channel::serialise() const
                         sizeof(trust_score));
 
     return { key_ostream.str(), value_ostream.str() };
+}
+
+
+void Channel::print(std::ostream& out) const
+{
+    out << "Channel\n{\n";
+    out << "  claim_hash = ";
+    for(size_t i=0; i<claim_hash.size(); ++i)
+        out << (unsigned int)claim_hash[i] << ' ';
+    out << '\n';
+    out << "  total_amount_deweys = " << total_amount_deweys << '\n';
+    out << "  trust_score = " << trust_score << '\n';
+    out << '}';
+}
+
+std::ostream& operator << (std::ostream& out, const Channel& channel)
+{
+    channel.print(out);
+    return out;
 }
 
 
