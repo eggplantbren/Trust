@@ -7,7 +7,7 @@ Database::Database()
 {
     rocksdb::Options options;
     options.create_if_missing = true;
-    rocksdb::Status status = rocksdb::DB::Open(options, "./channeldb", &db);
+    rocksdb::Status status = rocksdb::DB::Open(options, "./db", &db);
     assert(status.ok());
 }
 
