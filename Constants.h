@@ -9,7 +9,7 @@ namespace Trust
 namespace Constants
 {
 
-static constexpr Bytes CHANNEL_PREFIX = {0};
+static const Bytes CHANNEL_PREFIX = {0};
 static constexpr int CLAIM_HASH_SIZE = 20;
 
 } // namespace Constants
