@@ -9,5 +9,7 @@ default:
 	ar rcs libTrust.a *.o
 	$(CXX) -I . $(FLAGS) -c Tests/channel_serialisation.cpp
 	$(CXX) -I . $(FLAGS) -c Tests/support_serialisation.cpp
+	$(CXX) -I . $(FLAGS) -c Tests/db_ops.cpp
 	$(CXX) -L . -o Tests/channel_serialisation channel_serialisation.o -lTrust
 	$(CXX) -L . -o Tests/support_serialisation support_serialisation.o -lTrust
+	$(CXX) -L . -o Tests/db_ops db_ops.o -lTrust -lrocksdb
