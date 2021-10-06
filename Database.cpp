@@ -1,5 +1,6 @@
 #include "Database.h"
 #include "Channel.h"
+#include "Support.h"
 
 namespace Trust
 {
@@ -22,6 +23,11 @@ void Database::channel_created(const std::string& claim_hash, std::uint64_t bid)
     Channel c(claim_hash, bid);
     auto [key, value] = c.serialise();
     rocksdb::Status s = db->Put(rocksdb::WriteOptions(), key, value);
+
+    Support support(claim_hash, bid);
+    auto [key2, value2] = support.serialise();
+    s = db->Put(rocksdb::WriteOptions(), key2, value2);
+
     assert(s.ok());
 }
 
