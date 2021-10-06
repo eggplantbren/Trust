@@ -1,7 +1,6 @@
 #ifndef Trust_Support_h
 #define Trust_Support_h
 
-#include "Bytes.h"
 #include <cstdint>
 #include <ostream>
 #include <optional>
@@ -13,24 +12,24 @@ namespace Trust
 class Support
 {
     private:
-        Bytes supported_channel;
+        std::string supported_channel;
         std::uint64_t total_amount_deweys;
-        std::optional<Bytes> supporting_channel;
+        std::optional<std::string> supporting_channel;
 
     public:
 
         Support() = delete;
 
         // Construct from given stuff
-        Support(Bytes _supported_channel,
+        Support(std::string _supported_channel,
                 std::uint64_t _total_amount_deweys,
-                std::optional<Bytes> _supporting_channel = {});
+                std::optional<std::string> _supporting_channel = {});
 
         // Construct from RocksDB serialisation
-        Support(const Bytes& key, const Bytes& value);
+        Support(const std::string& key, const std::string& value);
 
         // Serialise for RocksDB
-        std::tuple<Bytes, Bytes> serialise() const;
+        std::tuple<std::string, std::string> serialise() const;
 
         // Print for human consumption
         void print(std::ostream& out) const;

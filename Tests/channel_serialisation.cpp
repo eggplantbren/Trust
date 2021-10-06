@@ -6,9 +6,9 @@ using namespace Trust;
 int main()
 {
     // Prepare a claim hash
-    Bytes claim_hash;
+    std::string claim_hash;
     for(int i=0; i<20; ++i)
-        claim_hash += (unsigned char)i;
+        claim_hash += (char)i;
 
     // Create and print channel
     Channel c1(claim_hash, 100000000);

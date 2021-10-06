@@ -1,8 +1,6 @@
 #ifndef Trust_Channel_h
 #define Trust_Channel_h
 
-#include "Bytes.h"
-#include <cstdint>
 #include <ostream>
 #include <tuple>
 
@@ -12,7 +10,7 @@ namespace Trust
 class Channel
 {
     private:
-        Bytes claim_hash;
+        std::string claim_hash;
         std::uint64_t total_amount_deweys;
         double trust_score;
 
@@ -21,13 +19,13 @@ class Channel
         Channel() = delete;
 
         // Construct from claim_hash and total dewey amount
-        Channel(Bytes _claim_hash, std::uint64_t _total_amount_deweys);
+        Channel(std::string _claim_hash, std::uint64_t _total_amount_deweys);
 
         // Construct from RocksDB serialisation
-        Channel(const Bytes& key, const Bytes& value);
+        Channel(const std::string& key, const std::string& value);
 
         // Serialise for RocksDB
-        std::tuple<Bytes, Bytes> serialise() const;
+        std::tuple<std::string, std::string> serialise() const;
 
         // Print for human consumption
         void print(std::ostream& out) const;

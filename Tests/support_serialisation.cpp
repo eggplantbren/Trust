@@ -6,9 +6,9 @@ using namespace Trust;
 int main()
 {
     // Prepare a claim hash
-    Bytes claim_hash;
+    std::string claim_hash;
     for(int i=0; i<20; ++i)
-        claim_hash += (unsigned char)i;
+        claim_hash += (char)i;
 
     // Create and print support
     Support s1(claim_hash, 100000000);
@@ -22,9 +22,9 @@ int main()
     std::cout << s2 << std::endl;
 
     // Now redo with signed support
-    Bytes temp;
+    std::string temp;
     for(int i=0; i<20; ++i)
-        temp += (unsigned char)(i + 20);
+        temp += (char)(i + 20);
     Support s3(claim_hash, 12345678, temp);
     std::cout << s3 << std::endl;
     auto [key3, value3] = s3.serialise();
