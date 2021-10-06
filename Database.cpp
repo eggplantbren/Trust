@@ -61,6 +61,17 @@ void Database::channel_updated(const std::string& claim_hash,
     assert(status.ok());
 }
 
+void Database::channel_abandoned(const std::string& claim_hash)
+{
+    std::string key = Constants::CHANNEL_PREFIX + claim_hash;
+    rocksdb::Status status = db->Delete(rocksdb::WriteOptions(), key);
+    assert(status.ok());
+
+    // TODO: Move associated support to the unsigned part
+}
+
+
+
 void Database::print(std::ostream& out) const
 {
     rocksdb::Iterator* it = db->NewIterator(rocksdb::ReadOptions());

@@ -26,6 +26,8 @@ class Database
         // A channel was updated and its bid changed
         void channel_updated(const std::string& claim_hash, long long bid_change);
 
+        // A channel was abandoned
+        void channel_abandoned(const std::string& claim_hash);
 
 /*        void channel_abandoned(const std::string& _claim_hash);*/
 
