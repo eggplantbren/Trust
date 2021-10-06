@@ -1,5 +1,6 @@
 #include "Database.h"
 #include "Channel.h"
+#include "Constants.h"
 #include "Support.h"
 
 namespace Trust
@@ -23,19 +24,32 @@ void Database::channel_created(const std::string& claim_hash, std::uint64_t bid)
     Channel c(claim_hash, bid);
     auto [key, value] = c.serialise();
     rocksdb::Status s = db->Put(rocksdb::WriteOptions(), key, value);
+    assert(s.ok());
 
     Support support(claim_hash, bid);
-    auto [key2, value2] = support.serialise();
-    s = db->Put(rocksdb::WriteOptions(), key2, value2);
-
+    std::tie(key, value) = support.serialise();
+    s = db->Put(rocksdb::WriteOptions(), key, value);
     assert(s.ok());
 }
 
-void Database::channel_updated(const std::string& _claim_hash,
-                               std::uint64_t old_bid,
-                               std::uint64_t new_bid)
+void Database::channel_updated(const std::string& claim_hash,
+                               long long bid_change)
 {
-    // TODO
+    // Read existing channel data
+    std::string key, value;
+    key = Constants::CHANNEL_PREFIX + claim_hash;
+    rocksdb::Status s = db->Get(rocksdb::ReadOptions(), key, &value);
+    assert(s.ok());
+
+    // Increment and save updated channel data
+    Channel c(key, value);
+    c.increment_deweys(bid_change);
+    std::tie(key, value) = c.serialise();
+    s = db->Put(rocksdb::WriteOptions(), key, value);
+    assert(s.ok());
+
+    // Increment and save updated support data
+    
 }
 
 } // namespace

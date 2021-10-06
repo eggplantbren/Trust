@@ -12,21 +12,24 @@ namespace Trust
 class Support
 {
     private:
-        std::string supported_channel;
+        std::string destination;
         std::uint64_t total_amount_deweys;
-        std::optional<std::string> supporting_channel;
+        std::optional<std::string> source;
 
     public:
 
         Support() = delete;
 
         // Construct from given stuff
-        Support(std::string _supported_channel,
+        Support(std::string _destination,
                 std::uint64_t _total_amount_deweys,
-                std::optional<std::string> _supporting_channel = {});
+                std::optional<std::string> _source = {});
 
         // Construct from RocksDB serialisation
         Support(const std::string& key, const std::string& value);
+
+        // Alter total deweys
+        void increment_deweys(long long delta);
 
         // Serialise for RocksDB
         std::tuple<std::string, std::string> serialise() const;

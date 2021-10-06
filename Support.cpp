@@ -6,16 +6,16 @@
 namespace Trust
 {
 
-Support::Support(std::string _supported_channel,
+Support::Support(std::string _destination,
                  std::uint64_t _total_amount_deweys,
-                 std::optional<std::string> _supporting_channel)
-:supported_channel(std::move(_supported_channel))
+                 std::optional<std::string> _source)
+:destination(std::move(_destination))
 ,total_amount_deweys(_total_amount_deweys)
-,supporting_channel(std::move(_supporting_channel))
+,source(std::move(_source))
 {
-    assert(supported_channel.size() == Constants::CLAIM_HASH_SIZE);
-    if(supporting_channel.has_value())
-        assert(supporting_channel->size() == Constants::CLAIM_HASH_SIZE);
+    assert(destination.size() == Constants::CLAIM_HASH_SIZE);
+    if(source.has_value())
+        assert(source->size() == Constants::CLAIM_HASH_SIZE);
 }
 
 // Construct from RocksDB serialisation
@@ -26,9 +26,9 @@ Support::Support(const std::string& key, const std::string& value)
     assert(value.size() == 8);
 
     // Unpack key
-    supported_channel = key.substr(1, Constants::CLAIM_HASH_SIZE+1);
+    destination = key.substr(1, Constants::CLAIM_HASH_SIZE+1);
     if(key.size() == 2*Constants::CLAIM_HASH_SIZE + 1)
-        supporting_channel = key.substr(Constants::CLAIM_HASH_SIZE+1);
+        source = key.substr(Constants::CLAIM_HASH_SIZE+1);
 
     // Unpack value
     std::stringstream value_istream(value);
@@ -36,14 +36,19 @@ Support::Support(const std::string& key, const std::string& value)
                         sizeof(total_amount_deweys));
 }
 
+void Support::increment_deweys(long long delta)
+{
+    total_amount_deweys += delta;
+}
+
 std::tuple<std::string, std::string> Support::serialise() const
 {
     // Pack key
     std::stringstream key_ostream;
     key_ostream << Constants::SUPPORT_PREFIX;
-    key_ostream << supported_channel;
-    if(supporting_channel.has_value())
-        key_ostream << (*supporting_channel);
+    key_ostream << destination;
+    if(source.has_value())
+        key_ostream << (*source);
 
     // Pack value
     std::stringstream value_ostream;
@@ -57,15 +62,15 @@ std::tuple<std::string, std::string> Support::serialise() const
 void Support::print(std::ostream& out) const
 {
     out << "Support\n{\n";
-    out << "  supported_channel = ";
-    for(size_t i=0; i<supported_channel.size(); ++i)
-        out << (int)supported_channel[i] << ' ';
+    out << "  destination = ";
+    for(size_t i=0; i<destination.size(); ++i)
+        out << (int)destination[i] << ' ';
     out << '\n';
     out << "  total_amount_deweys = " << total_amount_deweys << '\n';
-    out << "  supporting_channel = ";
-    if(supporting_channel.has_value())
-        for(size_t i=0; i<supporting_channel->size(); ++i)
-            out << (int)(*supporting_channel)[i] << ' ';
+    out << "  source = ";
+    if(source.has_value())
+        for(size_t i=0; i<source->size(); ++i)
+            out << (int)(*source)[i] << ' ';
     else
         out << "null";
     out << '\n';

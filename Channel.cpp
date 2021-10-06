@@ -50,6 +50,11 @@ std::tuple<std::string, std::string> Channel::serialise() const
     return { key_ostream.str(), value_ostream.str() };
 }
 
+void Channel::increment_deweys(long long delta_deweys)
+{
+    total_amount_deweys += delta_deweys;
+}
+
 
 void Channel::print(std::ostream& out) const
 {

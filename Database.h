@@ -19,13 +19,11 @@ class Database
         // Events that can occur on the blockchain that should trigger
         // something to occur in the trust database.
 
-        // A channel was created. Does not check for pre-existence!
-        void channel_created(const std::string& _claim_hash, std::uint64_t bid);
+        // A channel was created
+        void channel_created(const std::string& claim_hash, std::uint64_t bid);
 
-        // A channel was updated and its bid changed.
-        void channel_updated(const std::string& _claim_hash,
-                                std::uint64_t old_bid,
-                                std::uint64_t new_bid);
+        // A channel was updated and its bid changed
+        void channel_updated(const std::string& claim_hash, long long bid_change);
 
 
 /*        void channel_abandoned(const std::string& _claim_hash);*/

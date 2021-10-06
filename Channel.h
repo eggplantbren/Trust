@@ -27,6 +27,9 @@ class Channel
         // Serialise for RocksDB
         std::tuple<std::string, std::string> serialise() const;
 
+        // Setter
+        void increment_deweys(long long delta_deweys);
+
         // Print for human consumption
         void print(std::ostream& out) const;
 };
