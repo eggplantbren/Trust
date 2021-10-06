@@ -18,6 +18,7 @@ Channel::Channel(std::string _claim_hash, std::uint64_t _total_amount_deweys)
 // Construct from RocksDB serialisation
 Channel::Channel(const std::string& key, const std::string& value)
 {
+    assert(key[0] == Constants::CHANNEL_PREFIX);
     assert(key.size() == Constants::CLAIM_HASH_SIZE + 1);
     assert(value.size() == 2*8);
 

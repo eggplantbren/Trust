@@ -40,25 +40,52 @@ void Database::channel_updated(const std::string& claim_hash,
     key = Constants::CHANNEL_PREFIX + claim_hash;
     rocksdb::Status status = db->Get(rocksdb::ReadOptions(), key, &value);
     assert(status.ok());
-
-    // Increment and save updated channel data
     Channel c(key, value);
-    c.increment_deweys(bid_change);
-    std::tie(key, value) = c.serialise();
-    status = db->Put(rocksdb::WriteOptions(), key, value);
-    assert(status.ok());
 
     // Read existing support data
     key = Constants::SUPPORT_PREFIX + claim_hash;
     status = db->Get(rocksdb::ReadOptions(), key, &value);
     assert(status.ok());
-
-    // Increment and save updated support data
     Support s(key, value);
-    s.increment_deweys(bid_change);
+
+    // Update values (not trust score, yet)
+    c.increment_deweys(bid_change);
+    s.increment_deweys(bid_change);   
+
+    // Save updated data
+    std::tie(key, value) = c.serialise();
+    status = db->Put(rocksdb::WriteOptions(), key, value);
+    assert(status.ok());
     std::tie(key, value) = s.serialise();
     status = db->Put(rocksdb::WriteOptions(), key, value);
     assert(status.ok());
+}
+
+void Database::print(std::ostream& out) const
+{
+    rocksdb::Iterator* it = db->NewIterator(rocksdb::ReadOptions());
+    for(it->SeekToFirst(); it->Valid(); it->Next())
+    {
+        std::string key   = it->key().ToString();
+        std::string value = it->value().ToString();
+        if(key[0] == Constants::CHANNEL_PREFIX)
+            out << Channel{key, value} << std::endl;
+        else if(key[0] == Constants::SUPPORT_PREFIX)
+            out << Support{key, value} << std::endl;
+        else
+        {
+            out << "Unknown " << it->key().ToString() << ": ";
+            out << it->value().ToString() << std::endl;
+        }
+    }
+    assert(it->status().ok()); // Check for any errors found during the scan
+    delete it;
+}
+
+std::ostream& operator << (std::ostream& out, const Database& database)
+{
+    database.print(out);
+    return out;
 }
 
 } // namespace

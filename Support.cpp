@@ -21,6 +21,7 @@ Support::Support(std::string _destination,
 // Construct from RocksDB serialisation
 Support::Support(const std::string& key, const std::string& value)
 {
+    assert(key[0] == Constants::SUPPORT_PREFIX);
     assert(key.size() == Constants::CLAIM_HASH_SIZE + 1 ||
            key.size() == 2*Constants::CLAIM_HASH_SIZE + 1);
     assert(value.size() == 8);

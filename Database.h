@@ -3,6 +3,7 @@
 
 #include <rocksdb/db.h>
 #include <cstdint>
+#include <ostream>
 
 namespace Trust
 {
@@ -33,8 +34,10 @@ class Database
 /*        void claim_added_to_channel(const std::string& _claim_hash, std::uint64_t amount);*/
 /*        void claim_removed_from_channel(const std::string& _claim_hash, std::uint64_t amount);*/
 
-        void print_all(std::ostream& out) const;
+        void print(std::ostream& out) const;
 };
+
+std::ostream& operator << (std::ostream& out, const Database& database);
 
 } // namespace
 

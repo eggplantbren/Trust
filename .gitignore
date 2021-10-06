@@ -1,5 +1,7 @@
+db
 libTrust.a
 *.o
 Tests/channel_serialisation
 Tests/support_serialisation
 Tests/db_ops
+Tests/db
