@@ -31,4 +31,11 @@ void Database::channel_created(const std::string& claim_hash, std::uint64_t bid)
     assert(s.ok());
 }
 
+void Database::channel_updated(const std::string& _claim_hash,
+                               std::uint64_t old_bid,
+                               std::uint64_t new_bid)
+{
+    // TODO
+}
+
 } // namespace
